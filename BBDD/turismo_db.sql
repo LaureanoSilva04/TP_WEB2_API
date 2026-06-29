@@ -36,6 +36,22 @@ CREATE TABLE `alojamiento` (
   `disponible` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `alojamiento`
+--
+
+INSERT INTO `alojamiento` (`id_ciudad`, `nombre`, `tipo`, `precio_noche`, `disponible`) VALUES
+(1, 'Hotel Castillo Infinito', 'Hotel', 65000.00, 1),
+(2, 'Ryokan de la Flor', 'Hostal', 25000.00, 1),
+(3, 'Departamentos Dotonbori', 'Departamento', 28000.00, 0),
+(6, 'Hostal de los Imperios', 'Hostal', 18000.00, 1),
+(8, 'Suites del Renacimiento', 'Hotel', 55000.00, 1),
+(12, 'Departamento Copacabana', 'Departamento', 35000.00, 0),
+(15, 'Cabañas Ruta del Entrenador', 'Cabaña', 22000.00, 1),
+(17, 'Hostal Bondi Beach', 'Hostal', 15000.00, 1),
+(23, 'Refugio del Caballero Hueco', 'Cabaña', 45000.00, 1),
+(24, 'Hotel Saint-Laurent', 'Hotel', 50000.00, 1);
+
 -- --------------------------------------------------------
 
 --
