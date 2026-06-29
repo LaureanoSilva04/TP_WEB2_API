@@ -13,22 +13,26 @@ class ApiAlojamientoController{
     function getAlojamientos($req, $res) {
         //verifico si hay un campo de ordenamiento distinto
         if(isset($req->query->sort)) {
-            $campo = $req->query->sort
+            $campo = $req->query->sort;
         } else {
             $campo = 'id_alojamiento';
         }
 
         if(isset($req->query->order)) {
-            $orden = $req->query->order
+            $orden = $req->query->order;
         } else {
             $orden = 'DESC';
         }
 
-        //verifico si me piden paginado
-        $limit = 5;
-        if(isset($req->query->page)) {
-            $page = $req->query->page;
+        //por defecto asumo que NO quieren paginado (valores nulos)
+        $limit = null;
+        $offset = null;
 
+        //si user escribe ?page= en la URL activo las variables
+        if(isset($req->query->page)) {
+            $limit = 5;
+            $page = $req->query->page;
+            
             if($page < 1) {
                 $page = 1;
             }
@@ -48,6 +52,11 @@ class ApiAlojamientoController{
 
     function getAlojamientoID($req, $res) {
         $alojamiento = $this->model->get($req->params->id);
+
+        if ($alojamiento === false) {
+            return $res->json("No existe ese alojamiento", 404);
+        }
+    
         return $res->json($alojamiento, 200);
     }
 
@@ -55,7 +64,7 @@ class ApiAlojamientoController{
         $body = $req->body;
 
         //valido que los campos esten llenos antes de insertarlos en la bbdd
-        if(empty($body->id_ciudad) || empty($body->nombre) || empty($body->tipo) || empty($body->precio_noche) || empty($body->disponible)){
+        if(empty($body->id_ciudad) || empty($body->nombre) || empty($body->tipo) || empty($body->precio_noche) || !isset($body->disponible)){
             return $res->json("Faltan completar campos obligatorios de la tabla", 400);
         }
 
@@ -68,7 +77,7 @@ class ApiAlojamientoController{
         $newID = $this->model->insert($nombre, $tipo, $precio, $id_ciudad, $disponible);
 
         if ($newID === false) {
-            return $res->json("No se pudo insertar el alojamiento en la base de datos", 500)
+            return $res->json("No se pudo insertar el alojamiento en la base de datos", 500);
         }
 
         return $res->json("Creación completa con el id: " . $newID, 201);
@@ -79,7 +88,7 @@ class ApiAlojamientoController{
         $alojamiento = $this->model->get($id);
         
         if($alojamiento === false) {
-            return $res->json("El alojamiento con el ID " . $id . " no existe", 404);
+            return $res->json("Este alojamiento no existe", 404);
         }
 
         $body = $req->body;

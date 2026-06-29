@@ -29,12 +29,12 @@ class AlojamientoModel extends Model{
         $sql = $sql . " order by $campo $orden";
 
         if($limit !== null && $offset !== null) {
-            $sql = $sql . " limit " . $limit . " offset "  $offset;
+            $sql = $sql . " limit " . $limit . " offset " . $offset;
         }
 
         $query = $this->db->prepare($sql);
         $query->execute($to_execute);
-        $alojamiento = $query->fetchAll(PDO::FETCH_OBJ)
+        $alojamiento = $query->fetchAll(PDO::FETCH_OBJ);
         return $alojamiento;
     }
 
@@ -43,14 +43,14 @@ class AlojamientoModel extends Model{
                                     from alojamiento
                                     where id_alojamiento = ?");
         $query->execute([$id]);
-        $alojamiento = $query->fetch(PDO::FETCH_OBJ)
+        $alojamiento = $query->fetch(PDO::FETCH_OBJ);
         return $alojamiento;
     }
 
     function insert($nombre, $tipo, $precio_noche, $id_ciudad, $disponible) {
         try {
             $query = $this->db->prepare("insert into alojamiento (id_ciudad, nombre, tipo, precio_noche, disponible)
-                                        values (?, ?, ?, ?, ?");
+                                        values (?, ?, ?, ?, ?)");
             $query->execute([$id_ciudad, $nombre, $tipo, $precio_noche, $disponible]);
 
             $ultimoID = $this->db->lastInsertId();
